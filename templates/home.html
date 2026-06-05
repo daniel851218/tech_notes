@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-band">
+  <div class="container">
+    <div class="row g-4 g-xl-5 align-items-start">
+      <div class="col-lg-8 order-2 order-lg-1">
+        {% if active_filter %}
+        <header class="filter-heading">
+          <p class="eyebrow mb-2">{{ active_filter.type }}</p>
+          <h1>{{ active_filter.name }}</h1>
+          <p>{{ active_filter.count }} article{% if active_filter.count != 1 %}s{% endif %} in this {{ active_filter.type | lower }}.</p>
+        </header>
+        {% endif %}
+
+        <div class="article-list">
+          {% for article in articles %}
+          <article class="article-card">
+            <div class="article-meta">
+              <time datetime="{{ article.display_date }}">{{ article.display_date }}</time>
+              {% if article.series_item %}
+              <a class="article-meta-link" href="{{ base_path }}{{ article.series_item.url }}">{{ article.series_item.name }}</a>
+              {% endif %}
+            </div>
+            <h2><a href="{{ base_path }}{{ article.url }}">{{ article.title }}</a></h2>
+            <p>{{ article.summary }}</p>
+            <div class="tag-row">
+              {% for tag in article.tag_items %}
+              <a class="tag-pill tag-link" href="{{ base_path }}{{ tag.url }}">{{ tag.name }}</a>
+              {% endfor %}
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+
+        {% if pagination.total > 1 %}
+        <nav class="pagination-wrap" aria-label="Article pagination">
+          <ul class="pagination justify-content-center mb-0">
+            <li class="page-item {% if not pagination.previous_url %}disabled{% endif %}">
+              <a class="page-link page-link-icon" href="{% if pagination.previous_url %}{{ base_path }}{{ pagination.previous_url }}{% else %}#{% endif %}" aria-label="Previous page">
+                <span aria-hidden="true">&lsaquo;</span>
+                <span class="visually-hidden">Previous</span>
+              </a>
+            </li>
+            {% for page_item in pagination.pages %}
+            <li class="page-item {% if page_item.number == pagination.current %}active{% endif %}">
+              <a class="page-link" href="{{ base_path }}{{ page_item.url }}">{{ page_item.number }}</a>
+            </li>
+            {% endfor %}
+            <li class="page-item {% if not pagination.next_url %}disabled{% endif %}">
+              <a class="page-link page-link-icon" href="{% if pagination.next_url %}{{ base_path }}{{ pagination.next_url }}{% else %}#{% endif %}" aria-label="Next page">
+                <span aria-hidden="true">&rsaquo;</span>
+                <span class="visually-hidden">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        {% endif %}
+      </div>
+
+      <aside class="col-lg-4 sidebar-stack order-1 order-lg-2">
+        <section class="sidebar-panel">
+          <h2>Series</h2>
+          <ul class="taxonomy-list">
+            {% for item in series %}
+            <li>
+              <a class="taxonomy-link {% if active_filter and active_filter.type == 'Series' and active_filter.name == item.name %}is-active{% endif %}" href="{{ base_path }}{{ item.url }}">
+                <span>{{ item.name }}</span>
+                <strong>{{ item.count }}</strong>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </section>
+
+        <section class="sidebar-panel">
+          <h2>Tags</h2>
+          <div class="tag-cloud">
+            {% for item in tags %}
+            <a class="tag-cloud-link {% if active_filter and active_filter.type == 'Tag' and active_filter.name == item.name %}is-active{% endif %}" href="{{ base_path }}{{ item.url }}">{{ item.name }} <small>{{ item.count }}</small></a>
+            {% endfor %}
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

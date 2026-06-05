@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-band article-shell">
+  <div class="container">
+    <div class="row g-4 g-xl-5 align-items-start">
+      <article class="col-lg-8 article-content order-2 order-lg-1">
+        <header class="article-header">
+          <div class="eyebrow article-kicker mb-2">
+            <time class="article-kicker-item" datetime="{{ article.display_date }}">{{ article.display_date }}</time>
+          </div>
+          <h1>{{ article.title }}</h1>
+          {% if article.summary %}<p class="lead-copy">{{ article.summary }}</p>{% endif %}
+          {% if article.series_item %}
+          <div class="article-meta-row">
+            <span class="meta-label">Series</span>
+            <a class="tag-pill tag-link series-pill" href="{{ base_path }}{{ article.series_item.url }}">{{ article.series_item.name }}</a>
+          </div>
+          {% endif %}
+          {% if article.tag_items %}
+          <div class="tag-row article-meta-row">
+            <span class="meta-label">Tags</span>
+            {% for tag in article.tag_items %}
+            <a class="tag-pill tag-link" href="{{ base_path }}{{ tag.url }}">{{ tag.name }}</a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </header>
+
+        <div class="prose">
+          {{ article.html | safe }}
+        </div>
+      </article>
+
+      <aside class="col-lg-4 article-sidebar order-1 order-lg-2">
+        <div class="sidebar-panel toc-panel">
+          <h2>Contents</h2>
+          {% if article.toc %}
+          <ol class="toc-list">
+            {% for item in article.toc %}
+            <li class="toc-level-{{ item.level }}"><a href="#{{ item.id }}">{{ item.name }}</a></li>
+            {% endfor %}
+          </ol>
+          {% else %}
+          <p class="small mb-0">No headings in this article.</p>
+          {% endif %}
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

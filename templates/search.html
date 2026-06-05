@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-band search-page" data-search-page data-search-index="{{ base_path }}search-index.json" data-base-path="{{ base_path }}">
+  <div class="container">
+    <div class="search-shell">
+      <header class="search-header">
+        <p class="eyebrow mb-2">Search</p>
+        <h1>Find an article</h1>
+        <p class="lead-copy">Search published notes by title, summary, tag, series, or article text.</p>
+      </header>
+
+      <form class="search-page-form" action="{{ base_path }}search/index.html" method="get" role="search">
+        <label class="visually-hidden" for="searchPageInput">Search articles</label>
+        <input class="form-control search-page-input" id="searchPageInput" type="search" name="q" placeholder="Search articles" autocomplete="off" data-search-input>
+        <button class="btn search-page-button" type="submit">
+          <i class="bi bi-search" aria-hidden="true"></i>
+          <span>Search</span>
+        </button>
+      </form>
+
+      <div class="search-status" data-search-status aria-live="polite">Enter a search term to find articles.</div>
+      <div class="search-results" data-search-results></div>
+      <script type="application/json" data-search-inline-index>{{ search_index | tojson }}</script>
+    </div>
+  </div>
+</section>
+{% endblock %}

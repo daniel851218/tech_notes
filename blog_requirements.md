@@ -1,0 +1,95 @@
+# Requirements
+- Static Website
+- Two Column Layout
+  - Header: Blog title
+  - Main (left): Refer to the description in "Three HTML Template"
+  - Side Bar (right): Refer to the description in "Three HTML Template"
+  - Footer: Copyright
+- Responsive
+- Using Bootstrap 5
+- Dark Theme / Light Theme
+- Back to Top Button
+- Write Articles in Markdown
+- Provide a Python Script to Convert Markdown to HTML
+- Generate static, shareable filter pages for article series and tags
+- Provide static article search from the navbar
+  - Search title, summary, tags, series, and article body text
+  - Use a generated client-side search index without requiring a server
+  - Keep search result URLs shareable with the `q` query parameter
+- Organize article Markdown files in series subfolders under `content/articles/`
+- Support local article images for diagrams, flow charts, and sequence diagrams
+  - Store local image files beside article Markdown, typically in an `images/` folder
+  - Reference images from Markdown with relative paths
+  - Copy referenced local images into each generated article output folder
+- Provide detailed code block syntax highlighting for technical articles
+  - Use fenced Markdown code blocks with language identifiers
+  - Highlight C, C++, Python, Makefile, and GNU linker scripts
+  - Show line numbers for article code blocks
+  - Provide copy-to-clipboard controls for code blocks
+  - Preserve horizontal scrolling for long code lines
+  - Style inline code distinctly from block code
+
+# Project Folder Structure
+- `build.py`
+  - Static site generator
+  - Reads Markdown content, renders templates, copies assets, and writes generated HTML to `site/`
+- `requirements.txt`
+  - Python dependency list for building the static site
+- `assets/`
+  - Source CSS and JavaScript used by the generated site
+  - `assets/css/style.css`: design tokens, layout, component styles, light/dark themes, and code block styling
+  - `assets/js/main.js`: theme toggle, back-to-top behavior, code block enhancements, and interactive page behavior
+- `content/`
+  - Source Markdown content and front matter
+  - `content/articles/`: blog article Markdown files organized in slug-named series folders
+  - `content/articles/<series-slug>/images/`: local article image files such as PNG, JPG, WebP, GIF, and SVG diagrams
+  - `content/pages/`: standalone information page Markdown files, such as About
+- `templates/`
+  - Jinja2 HTML templates used by the build script
+  - `templates/base.html`: shared document shell, navigation, assets, Prism, MathJax, and footer
+  - `templates/home.html`: home page and filtered listing page layout
+  - `templates/article.html`: article detail layout, metadata, table of contents, and article body
+  - `templates/page.html`: standalone information page layout
+  - `templates/search.html`: static article search page layout
+- `site/`
+  - Generated static website output
+  - `site/search-index.json`: generated article search index
+  - Must be rebuilt from source with `python build.py`
+  - Do not treat generated files as the source of truth
+- `blog_requirements.md`
+  - Product and feature requirements for the blog
+- `blog_spec.md`
+  - Visual design, typography, color, spacing, and component specification
+- `AGENTS.md`
+  - Project-specific implementation guidance for coding agents
+
+# Three HTML Template:
+- Home page
+  - Pagination
+  - Series, Tags on Side Bar
+  - Series, Tags Link to Filtered Article Lists
+  - Article List on Main
+- Series and Tag Filter page
+  - Show Active Series or Tag Name
+  - Show Matching Article List
+  - Pagination
+- Article page
+  - Mathematics Formula Rendering
+  - Local Markdown Images
+    - Responsive image layout
+    - Theme-aware border, background, and spacing
+    - Useful for system diagrams, flow charts, and sequence diagrams
+  - Code Block Highlight
+    - Syntax Highlighting
+    - Line Numbers
+    - Copy Button
+    - Inline Code Styling
+  - Table of Contents on Side Bar
+  - Series, Tags Link to Filtered Article Lists
+  - Article Content on Main
+- Information page
+  - Using One Column Layout
+- Search page
+  - Article search form
+  - Search status and result list
+  - Results link to generated article pages
