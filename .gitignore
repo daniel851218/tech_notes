@@ -1,5 +1,5 @@
-site/
-__pycache__/
-.venv/
-.mypy_cache/
-.pytest_cache/
+# Hugo generated files
+/public/
+/resources/
+/.cache/
+/.hugo_build.lock

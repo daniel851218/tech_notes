@@ -1,0 +1,12 @@
+{{- /* Chroma may pad fragments ending in whitespace or a backslash with a
+      newline. Remove that padding and retain only the source's own newline. */ -}}
+{{- $source := .code -}}
+{{- $ending := "" -}}
+{{- if hasSuffix $source "\n" -}}
+  {{- $ending = "\n" -}}
+  {{- $source = strings.TrimSuffix "\n" $source -}}
+{{- end -}}
+{{- $body := transform.Highlight $source .language (dict "hl_inline" true "noClasses" false "lineNos" false) -}}
+{{- $body = replaceRE `^<code[^>]*>|</code>$` "" $body -}}
+{{- $body = replaceRE `\n((?:</span>)*)$` "$1" $body -}}
+{{- return (printf "%s%s" $body $ending | safeHTML) -}}

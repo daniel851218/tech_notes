@@ -1,0 +1,6 @@
+{{ define "main" }}
+<section class="page-band"><div class="container two-column"><div>
+  <header class="list-heading"><div><h1>{{ .Title }}</h1></div><span class="list-count">{{ len .Data.Terms }} {{ if eq .Data.Singular "series" }}series{{ else }}tags{{ end }}</span></header>
+  <div class="term-grid">{{ range .Data.Terms.Alphabetical }}<a class="term-card" href="{{ .Page.RelPermalink }}"><span class="term-name">{{ .Page.Title }}</span><span class="muted">{{ .Count }} {{ if eq .Count 1 }}article{{ else }}articles{{ end }}</span>{{ partial "icon.html" "arrow-right" }}</a>{{ else }}<p>No {{ $.Data.Plural }} yet.</p>{{ end }}</div>
+</div>{{ partial "sidebar.html" . }}</div></section>
+{{ end }}

@@ -1,0 +1,10 @@
+{{ define "main" }}
+<section class="page-band"><div class="container search-shell" data-search-page data-search-index="{{ with site.Home.OutputFormats.Get "json" }}{{ .RelPermalink }}{{ end }}">
+  <header class="list-heading"><div><h1>{{ .Title }}</h1></div></header>
+  <form class="search-page-form" role="search" method="get"><label class="visually-hidden" for="search-query">Search all notes</label><div class="search-field">{{ partial "icon.html" "search" }}<input id="search-query" data-search-input type="search" name="q" placeholder="Enter a word or phrase to search the notebook." autocomplete="off" autofocus maxlength="200"></div><button class="primary-button" type="submit">Search</button></form>
+  <p class="search-status" data-search-status role="status" aria-live="polite"></p>
+  <noscript><p>Article search needs JavaScript. You can also browse the <a href="{{ "archives/" | relURL }}">archives</a>, <a href="{{ "series/" | relURL }}">series</a>, or <a href="{{ "tags/" | relURL }}">tags</a>.</p></noscript>
+  <div class="article-list" data-search-results></div>
+</div></section>
+{{ end }}
+{{ define "scripts" }}{{ $script := resources.Get "js/search.js" | minify | fingerprint }}<script defer src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}"></script>{{ end }}

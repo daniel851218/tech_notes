@@ -1,3 +1,16 @@
 [build]
-  command = "python build.py"
-  publish = "site"
+  command = 'hugo --gc --minify'
+  publish = 'public'
+
+[build.environment]
+  HUGO_VERSION = '0.159.2'
+  HUGO_EXTENDED = 'true'
+
+[context.deploy-preview]
+  command = 'hugo --gc --minify --baseURL "$DEPLOY_PRIME_URL"'
+
+[[headers]]
+  for = '/*'
+  [headers.values]
+    X-Content-Type-Options = 'nosniff'
+    Referrer-Policy = 'strict-origin-when-cross-origin'

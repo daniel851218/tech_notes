@@ -1,0 +1,3 @@
+{{- $lang := .Get "lang" | default "text" -}}
+{{- if not (transform.CanHighlight $lang) }}{{ $lang = "text" }}{{ end -}}
+{{- transform.Highlight .Inner $lang (dict "hl_inline" true "noClasses" false "lineNos" false) | replaceRE `class="code-inline` `class="inline-highlight chroma code-inline` | safeHTML -}}

@@ -1,0 +1,8 @@
+{{- /* Index author content, excluding code toolbars and rendered line numbers. */ -}}
+{{- /* Render first so literal angle brackets in code are escaped before
+      plainify removes HTML. Applying plainify to Markdown can erase includes
+      and whole sections between code samples containing < and >. */ -}}
+{{- $text := .Content -}}
+{{- $text = replaceRE `(?s)<div class="code-toolbar">.*?</div>` " " $text -}}
+{{- $text = replaceRE `<span class="(?:ln|lnt)"[^>]*>[^<]*</span>` "" $text -}}
+{{- return ($text | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace) -}}

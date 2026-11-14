@@ -1,0 +1,11 @@
+<article class="article-card">
+  <div class="article-meta">
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+    {{ range .GetTerms "series" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}
+    {{ if .Draft }}<span class="draft-badge">Draft</span>{{ end }}
+    {{ if site.Params.showReadingTime }}<span class="reading-time">{{ .ReadingTime }} min read</span>{{ end }}
+  </div>
+  <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+  {{ with .Params.summary | default (.Summary | plainify | truncate 220) }}<p>{{ . | plainify }}</p>{{ end }}
+  <div class="card-bottom"><div class="tag-row">{{ range .GetTerms "tags" }}<a class="tag-pill" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</div><a class="read-link" href="{{ .RelPermalink }}" aria-label="Read {{ .Title }}">Read note {{ partial "icon.html" "arrow-right" }}</a></div>
+</article>

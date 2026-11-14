@@ -1,0 +1,20 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="site-wordmark" href="{{ site.Home.RelPermalink }}">{{ partial "icon.html" "book" }}<span>{{ site.Title }}</span></a>
+    <nav class="desktop-nav" aria-label="Main navigation">{{ partial "menu.html" . }}</nav>
+    <div class="header-tools">
+      {{ with site.GetPage "/search" }}
+      <form class="nav-search" action="{{ .RelPermalink }}" method="get" role="search">
+        <label class="visually-hidden" for="nav-query">Search articles</label>
+        <input id="nav-query" type="search" name="q" placeholder="Search notes…" autocomplete="off">
+        <button type="submit" aria-label="Search articles">{{ partial "icon.html" "search" }}</button>
+      </form>
+      {{ end }}
+      <button class="theme-toggle icon-button" type="button" data-theme-toggle aria-label="Toggle color theme" title="Toggle color theme" hidden><span class="theme-sun">{{ partial "icon.html" "sun" }}</span><span class="theme-moon">{{ partial "icon.html" "moon" }}</span></button>
+      <details class="mobile-nav">
+        <summary class="icon-button" aria-label="Toggle navigation">{{ partial "icon.html" "menu" }}</summary>
+        <nav aria-label="Mobile navigation">{{ partial "menu.html" . }}{{ with site.GetPage "/search" }}<a href="{{ .RelPermalink }}">Search</a>{{ end }}</nav>
+      </details>
+    </div>
+  </div>
+</header>

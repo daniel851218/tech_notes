@@ -1,0 +1,43 @@
+{{- /* Chroma treats a C/C++ preprocessor line as one CommentPreproc token.
+      Split its directive and macro name, then highlight the replacement text
+      as ordinary C/C++. Decode only token text, never generated markup, and
+      escape every new source fragment before returning trusted HTML. */ -}}
+{{- $highlighted := .highlighted -}}
+{{- $language := .language -}}
+{{- /* Include adjacent comment/include tokens: Chroma can mistake the // in a
+      quoted preprocessor URL for a comment. Re-highlight that whole fragment
+      together so strings and trailing comments retain their real meaning. */ -}}
+{{- range findRE `<span class="cp">[^<]*</span>(?:<span class="(?:cp|cm|c1|cpf)">[^<]*</span>)*` $highlighted | uniq -}}
+  {{- $original := . -}}
+  {{- $source := replaceRE `</?span[^>]*>` "" . | htmlUnescape -}}
+  {{- $rest := $source -}}
+  {{- $replacement := "" -}}
+  {{- with findRE `^[\t ]*#[\t ]*[A-Za-z_][A-Za-z0-9_]*` $rest 1 -}}
+    {{- $directive := index . 0 -}}
+    {{- $keyword := replaceRE `^[\t ]*#[\t ]*` "" $directive -}}
+    {{- $rest = strings.TrimPrefix $directive $rest -}}
+    {{- $replacement = printf `<span class="cp">%s</span>` (htmlEscape $directive) -}}
+    {{- if in (slice "define" "undef" "ifdef" "ifndef" "elifdef" "elifndef") $keyword -}}
+      {{- with findRE `^(?:[\t ]|(?s:/\*.*?\*/))*[A-Za-z_][A-Za-z0-9_]*` $rest 1 -}}
+        {{- $prefix := index . 0 -}}
+        {{- $name := index (findRE `[A-Za-z_][A-Za-z0-9_]*$` $prefix 1) 0 -}}
+        {{- $space := strings.TrimSuffix $name $prefix -}}
+        {{- $head := partial "highlight-c-fragment.html" (dict "code" $space "language" $language) -}}
+        {{- $replacement = printf `%s%s<span class="c-macro">%s</span>` $replacement $head (htmlEscape $name) -}}
+        {{- $rest = strings.TrimPrefix $prefix $rest -}}
+      {{- end -}}
+    {{- else if in (slice "include" "include_next" "import") $keyword -}}
+      {{- with findRE `^[\t ]*(?:<[^>\n]*>|"(?:\\.|[^"\\])*")` $rest 1 -}}
+        {{- $prefix := index . 0 -}}
+        {{- $path := replaceRE `^[\t ]*` "" $prefix -}}
+        {{- $space := strings.TrimSuffix $path $prefix -}}
+        {{- $replacement = printf `%s%s<span class="cpf">%s</span>` $replacement (htmlEscape $space) (htmlEscape $path) -}}
+        {{- $rest = strings.TrimPrefix $prefix $rest -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $body := partial "highlight-c-fragment.html" (dict "code" $rest "language" $language) -}}
+  {{- $replacement = printf "%s%s" $replacement $body -}}
+  {{- $highlighted = replace $highlighted $original $replacement -}}
+{{- end -}}
+{{- return ($highlighted | safeHTML) -}}

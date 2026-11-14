@@ -1,0 +1,11 @@
+<aside class="sidebar-stack" aria-label="Explore notes">
+  <section class="sidebar-panel">
+    <h2><a href="{{ "series/" | relURL }}">Series</a><span class="panel-count">{{ len (site.Taxonomies.series | default dict) }}</span></h2>
+    <ul class="taxonomy-list">{{ range site.Taxonomies.series.Alphabetical }}<li><a href="{{ .Page.RelPermalink }}"{{ if eq $.RelPermalink .Page.RelPermalink }} aria-current="page"{{ end }}><span>{{ .Page.LinkTitle }}</span><span class="count">{{ .Count }}</span></a></li>{{ else }}<li class="muted">Series will appear here.</li>{{ end }}</ul>
+  </section>
+  <section class="sidebar-panel">
+    <h2><a href="{{ "tags/" | relURL }}">Tags</a><span class="panel-count">{{ len (site.Taxonomies.tags | default dict) }}</span></h2>
+    <div class="tag-cloud">{{ range site.Taxonomies.tags.Alphabetical }}<a class="tag-pill" href="{{ .Page.RelPermalink }}"{{ if eq $.RelPermalink .Page.RelPermalink }} aria-current="page"{{ end }}>{{ .Page.LinkTitle }} <small>{{ .Count }}</small></a>{{ else }}<p class="muted">Tags will appear here.</p>{{ end }}</div>
+  </section>
+  {{ with site.GetPage "/archives" }}<a class="sidebar-archive" href="{{ .RelPermalink }}"><span>Browse all notes</span>{{ partial "icon.html" "arrow-right" }}</a>{{ end }}
+</aside>

@@ -1,0 +1,9 @@
+{{ define "main" }}
+<section class="page-band"><div class="container two-column"><div>
+  <header class="list-heading"><div><p class="eyebrow">The notebook</p><h1>{{ .Title }}<span class="title-dot">.</span></h1></div></header>
+  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{ $pager := .Paginate .RegularPagesRecursive.ByDate.Reverse }}
+  <div class="article-list">{{ range $pager.Pages }}{{ partial "card.html" . }}{{ else }}<p>No notes in this section yet.</p>{{ end }}</div>
+  {{ partial "pagination.html" $pager }}
+</div>{{ partial "sidebar.html" . }}</div></section>
+{{ end }}
