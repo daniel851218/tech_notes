@@ -1,0 +1,8 @@
+{{ define "main" }}
+<section class="page-band"><div class="container two-column"><div>
+  {{ $posts := partial "posts.html" . }}
+  <header class="list-heading"><div><h1>{{ .Title }}</h1></div><span class="list-count">{{ len $posts }} articles</span></header>
+  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{ range $posts.GroupByDate "2006" }}<section class="archive-year"><h2>{{ .Key }}<span>{{ len .Pages }} {{ if eq (len .Pages) 1 }}note{{ else }}notes{{ end }}</span></h2><ul>{{ range .Pages }}<li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02" }}</time><div><a class="archive-title" href="{{ .RelPermalink }}">{{ .Title }}</a><div class="article-meta">{{ range .GetTerms "series" }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</div></div>{{ partial "icon.html" "arrow-right" }}</li>{{ end }}</ul></section>{{ else }}<p>No notes yet.</p>{{ end }}
+</div>{{ partial "sidebar.html" . }}</div></section>
+{{ end }}

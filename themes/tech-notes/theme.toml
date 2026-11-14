@@ -1,0 +1,10 @@
+name = 'Tech Notes'
+license = 'MIT'
+description = 'A technical editorial Hugo theme with grid paper, serif prose, teal accents, and accessible light and dark modes.'
+tags = ['blog', 'responsive', 'light', 'dark', 'search', 'math', 'series']
+features = ['archives', 'series', 'tags', 'search', 'syntax highlighting', 'math', 'table of contents']
+min_version = '0.146.0'
+
+[author]
+  name = 'Daniel'
+  homepage = 'https://daniel-tech-notes.netlify.app/'

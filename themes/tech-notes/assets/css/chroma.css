@@ -1,0 +1,17 @@
+/* Chroma tokens, matched to the original blog's Prism Tomorrow palette. */
+.chroma { color: #ccc; }
+.chroma .k, .chroma .kc, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr, .chroma .kt { color: #cc99cd; }
+.chroma .nf, .chroma .fm, .chroma .nc, .chroma .ne, .chroma .nb { color: #f8c555; }
+.chroma .s, .chroma .sa, .chroma .sb, .chroma .sc, .chroma .dl, .chroma .sd, .chroma .s2, .chroma .se, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr, .chroma .s1, .chroma .ss { color: #7ec699; }
+.chroma .m, .chroma .mb, .chroma .mf, .chroma .mh, .chroma .mi, .chroma .il, .chroma .mo, .chroma .o, .chroma .ow, .chroma .no { color: #f08d49; }
+.chroma .c, .chroma .ch, .chroma .cm, .chroma .c1, .chroma .cs { color: #a4a4a4; font-style: italic; }
+.chroma .cp, .chroma .cpf, .chroma .na, .chroma .nv, .chroma .vc, .chroma .vg, .chroma .vi, .chroma .nt { color: #67cdcc; }
+.chroma .gd { color: #ff9292; }.chroma .gi { color: #7ec699; }.chroma .ge { font-style: italic; }.chroma .gs { font-weight: bold; }
+.chroma .err { color: inherit; background: transparent; }
+.c-family .chroma .cp { color: #cc99cd; }
+.c-family .chroma .c-macro { color: #f8c555; }
+.c-family .chroma .cpf { color: #7ec699; }
+.c-family .chroma .c, .c-family .chroma .ch, .c-family .chroma .cm, .c-family .chroma .c1, .c-family .chroma .cs { font-style: normal; }
+.inline-highlight.chroma .k, .inline-highlight.chroma .kt { color: var(--accent); }
+.inline-highlight.chroma .s, .inline-highlight.chroma .s2 { color: var(--heading-3); }
+.inline-highlight.chroma .nf, .inline-highlight.chroma .mi, .inline-highlight.chroma .o { color: var(--accent-2); }

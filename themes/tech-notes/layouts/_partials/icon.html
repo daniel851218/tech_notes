@@ -1,0 +1,19 @@
+<svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+{{- if eq . "book" -}}
+<path d="M5 3h14v18H5zM3 7h4M3 12h4M3 17h4M12 8l-3 3 3 3m3-6 3 3-3 3"/>
+{{- else if eq . "search" -}}
+<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>
+{{- else if eq . "sun" -}}
+<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>
+{{- else if eq . "moon" -}}
+<path d="M20.5 14A9 9 0 0 1 10 3.5 9 9 0 1 0 20.5 14Z"/>
+{{- else if eq . "arrow-up" -}}
+<path d="M12 20V4m-6 6 6-6 6 6"/>
+{{- else if eq . "arrow-right" -}}
+<path d="M4 12h16m-6-6 6 6-6 6"/>
+{{- else if eq . "copy" -}}
+<rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V3H3v13h5"/>
+{{- else if eq . "menu" -}}
+<path d="M4 6h16M4 12h16M4 18h16"/>
+{{- end -}}
+</svg>

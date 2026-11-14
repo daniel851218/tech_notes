@@ -1,0 +1,23 @@
+{{ define "main" }}
+{{ $isPost := in site.Params.mainSections .Section }}
+<section class="page-band article-shell"><div class="container {{ if $isPost }}two-column article-grid{{ else }}narrow-page{{ end }}">
+  <article class="article-content">
+    <header class="article-header">
+      <a class="breadcrumb" href="{{ site.Home.RelPermalink }}">← Back to notes</a>
+      {{ if $isPost }}<div class="eyebrow article-kicker"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>{{ if site.Params.showReadingTime }}<span>· {{ .ReadingTime }} min read</span>{{ end }}{{ if .Draft }}<span class="draft-badge">Draft preview</span>{{ end }}</div>{{ end }}
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.summary }}<p class="lead-copy">{{ . }}</p>{{ end }}
+      {{ with .GetTerms "series" }}<div class="article-meta-row"><span class="meta-label">Series</span>{{ range . }}<a class="tag-pill" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</div>{{ end }}
+      {{ with .GetTerms "tags" }}<div class="article-meta-row"><span class="meta-label">Tags</span>{{ range . }}<a class="tag-pill" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>{{ end }}</div>{{ end }}
+    </header>
+    <div class="prose">{{ .Content }}</div>
+    {{ if $isPost }}<div class="article-end"><span class="eyebrow">End of note</span><a href="{{ "archives/" | relURL }}">Explore the archives →</a></div>{{ end }}
+  </article>
+  {{ if $isPost }}
+  <aside class="article-sidebar sidebar-stack" aria-label="Article navigation">
+    {{ if ne (.Param "showTOC") false }}{{ if gt (len .Fragments.Headings) 0 }}<details class="sidebar-panel toc-panel" open><summary>On this page</summary><div class="toc">{{ .TableOfContents }}</div></details>{{ end }}{{ end }}
+    {{ partial "series-navigation.html" . }}
+  </aside>
+  {{ end }}
+</div></section>
+{{ end }}

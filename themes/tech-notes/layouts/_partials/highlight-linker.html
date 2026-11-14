@@ -1,0 +1,27 @@
+{{- /* GNU linker scripts are not covered by Chroma. Tokenize before escaping;
+      every source token is HTML-escaped before adding trusted span markup. */ -}}
+{{- $pattern := `(?s:/\*.*?\*/)|#[^\n]*|"(?:\\.|[^"\\])*"|\b(?:0[xX][0-9a-fA-F]+|[0-9]+)(?:[KMG])?\b|\.[A-Za-z0-9_.$-]+|[A-Za-z_$][A-Za-z0-9_.$-]*|[-+*/%=!|&:<>]+|\r?\n|.` -}}
+{{- $keywords := slice "ABSOLUTE" "ADDR" "ALIGN" "ASSERT" "AT" "DEFINED" "ENTRY" "GROUP" "INCLUDE" "KEEP" "LENGTH" "LOADADDR" "MEMORY" "ORIGIN" "OUTPUT" "OUTPUT_ARCH" "OUTPUT_FORMAT" "PHDRS" "PROVIDE" "PROVIDE_HIDDEN" "SEARCH_DIR" "SECTIONS" "SIZEOF" "SIZEOF_HEADERS" "SORT" "SORT_BY_ALIGNMENT" "SORT_BY_NAME" "STARTUP" "NOLOAD" "OVERLAY" "READONLY" -}}
+{{- /* Normalize Windows line endings before splitting multiline tokens. A CR
+      left inside a closing token span otherwise becomes an extra visual line. */ -}}
+{{- $source := replace .code "\r\n" "\n" -}}
+{{- $rendered := "" -}}
+{{- range findRE $pattern $source -}}
+  {{- $class := "" -}}
+  {{- if or (hasPrefix . "/*") (hasPrefix . "#") }}{{ $class = "c" }}
+  {{- else if hasPrefix . `"` }}{{ $class = "s" }}
+  {{- else if in $keywords . }}{{ $class = "k" }}
+  {{- else if findRE `^[0-9]` . }}{{ $class = "m" }}
+  {{- else if hasPrefix . "." }}{{ $class = "na" }}
+  {{- else if findRE `^[-+*/%=!|&:<>]+$` . }}{{ $class = "o" }}
+  {{- end -}}
+  {{- $escaped := . | htmlEscape -}}
+  {{- if $class -}}
+    {{- $escaped = printf `<span class="%s">%s</span>` $class (replace $escaped "\n" (printf "</span>\n<span class=\"%s\">" $class)) -}}
+  {{- end -}}
+  {{- $rendered = printf "%s%s" $rendered $escaped -}}
+{{- end -}}
+{{- $lines := split (strings.TrimSuffix "\n" $rendered) "\n" -}}
+{{- $start := int (.options.linenostart | default 1) -}}
+{{- $numbers := ne .options.linenos false -}}
+<div class="highlight"><pre class="chroma"><code class="language-linker-script">{{- range $i, $line := $lines -}}<span class="line">{{ if $numbers }}<span class="ln">{{ add $i $start }}</span>{{ end }}<span class="cl">{{ $line | safeHTML }}{{ "\n" }}</span></span>{{- end -}}</code></pre></div>

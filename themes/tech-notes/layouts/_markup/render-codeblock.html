@@ -1,0 +1,10 @@
+{{- $lang := lower .Type | default "text" -}}
+{{- $aliases := dict "ascii" "text" "linker-script" "ld" "lds" "ld" "linkerscript" "ld" -}}
+{{- $highlightLang := index $aliases $lang | default $lang -}}
+{{- if not (transform.CanHighlight $highlightLang) }}{{ $highlightLang = "text" }}{{ end -}}
+{{- $opts := merge (dict "linenos" "inline" "noclasses" false) .Options -}}
+{{- $cFamily := in (slice "c" "cpp" "c++") $highlightLang -}}
+<div class="code-block{{ if $cFamily }} c-family{{ end }}" data-language="{{ $lang }}">
+  <div class="code-toolbar"><span>{{ $lang }}</span><button type="button" class="copy-button" data-copy-code aria-label="Copy {{ $lang }} code" hidden>{{ partial "icon.html" "copy" }}<span data-copy-label>Copy</span></button></div>
+  <div class="code-scroll" tabindex="0" role="region" aria-label="{{ $lang }} code, scroll horizontally for long lines">{{ if in (slice "linker-script" "ld" "lds" "linkerscript") $lang }}{{ partial "highlight-linker.html" (dict "code" .Inner "options" $opts) }}{{ else }}{{ $highlighted := transform.Highlight .Inner $highlightLang $opts }}{{ if $cFamily }}{{ partial "highlight-c-preprocessor.html" (dict "highlighted" $highlighted "language" $highlightLang) }}{{ else }}{{ $highlighted }}{{ end }}{{ end }}</div>
+</div>

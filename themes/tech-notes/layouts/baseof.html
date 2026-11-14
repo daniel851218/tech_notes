@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="{{ site.Language.LanguageCode | default "en" }}" data-bs-theme="light" data-default-theme="{{ site.Params.defaultTheme | default "auto" }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>{{ if not .IsHome }}{{ .Title }} · {{ end }}{{ site.Title }}</title>
+  <meta name="description" content="{{ .Description | default .Params.summary | default site.Params.description | plainify }}">
+  <link rel="canonical" href="{{ .Permalink }}">
+  <meta property="og:title" content="{{ .Title | default site.Title }}">
+  <meta property="og:description" content="{{ .Description | default .Params.summary | default site.Params.description | plainify }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:site_name" content="{{ site.Title }}">
+  <meta property="og:type" content="{{ if and .IsPage (in site.Params.mainSections .Section) }}article{{ else }}website{{ end }}">
+  {{ if and .IsPage (not .Date.IsZero) }}<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ end }}
+  {{ with site.Home.OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" title="{{ site.Title }}" href="{{ .RelPermalink }}">{{ end }}
+  <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+  {{ $init := resources.Get "js/theme-init.js" | minify | fingerprint }}
+  <script src="{{ $init.RelPermalink }}" integrity="{{ $init.Data.Integrity }}"></script>
+  {{ $styles := slice (resources.Get "css/fonts.css") (resources.Get "css/style.css") (resources.Get "css/chroma.css") | resources.Concat "css/tech-notes.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
+  {{ partial "head-extra.html" . }}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {{ partial "header.html" . }}
+  <main id="main" class="site-main" tabindex="-1">{{ block "main" . }}{{ end }}</main>
+  {{ partial "footer.html" . }}
+  <button class="back-to-top" type="button" data-back-to-top aria-label="Back to top" title="Back to top" hidden>{{ partial "icon.html" "arrow-up" }}</button>
+  {{ $script := resources.Get "js/main.js" | minify | fingerprint }}
+  <script defer src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}"></script>
+  {{ block "scripts" . }}{{ end }}
+</body>
+</html>

@@ -1,0 +1,8 @@
+{{ define "main" }}
+<section class="page-band"><div class="container two-column"><div>
+  <header class="filter-heading"><p class="eyebrow">{{ if eq .Data.Singular "series" }}Series{{ else }}Tag{{ end }}</p><h1>{{ .Title }}</h1><p>{{ len .RegularPages }} {{ if eq (len .RegularPages) 1 }}article{{ else }}articles{{ end }}</p></header>
+  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{ $pages := .RegularPages.ByDate.Reverse }}{{ if eq .Data.Singular "series" }}{{ $pages = .RegularPages.ByDate.ByParam "series_order" }}{{ end }}
+  {{ $pager := .Paginate $pages }}<div class="article-list">{{ range $pager.Pages }}{{ partial "card.html" . }}{{ end }}</div>{{ partial "pagination.html" $pager }}
+</div>{{ partial "sidebar.html" . }}</div></section>
+{{ end }}

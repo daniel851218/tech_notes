@@ -1,0 +1,75 @@
+baseURL = 'https://daniel-tech-notes.netlify.app/'
+languageCode = 'en'
+title = "Daniel's Tech Notes"
+theme = 'tech-notes'
+enableRobotsTXT = true
+enableGitInfo = false
+
+# Keep the original articles' author-written <br> elements.
+[markup.goldmark.renderer]
+  unsafe = true
+
+[taxonomies]
+  tag = 'tags'
+  series = 'series'
+
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+
+[permalinks.page]
+  articles = '/articles/:slug/'
+
+[markup.highlight]
+  noClasses = false
+  lineNos = true
+  lineNumbersInTable = false
+  tabWidth = 4
+
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 4
+  ordered = false
+
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [['\[', '\]'], ['$$', '$$']]
+    inline = [['\(', '\)'], ['$', '$']]
+
+[markup.goldmark.renderHooks.image]
+  useEmbedded = 'always'
+[markup.goldmark.renderHooks.link]
+  useEmbedded = 'always'
+
+[pagination]
+  pagerSize = 6
+
+[params]
+  author = 'Daniel'
+  description = 'Technical articles about coding, mathematics, and software craft.'
+  mainSections = ['articles']
+  defaultTheme = 'auto'
+  showReadingTime = true
+  showTOC = true
+  github = 'https://github.com/daniel851218'
+
+[[menus.main]]
+  name = 'Home'
+  pageRef = '/'
+  weight = 10
+[[menus.main]]
+  name = 'Archives'
+  pageRef = '/archives'
+  weight = 20
+[[menus.main]]
+  name = 'Series'
+  pageRef = '/series'
+  weight = 30
+[[menus.main]]
+  name = 'Tags'
+  pageRef = '/tags'
+  weight = 40
+[[menus.main]]
+  name = 'About'
+  pageRef = '/about'
+  weight = 50

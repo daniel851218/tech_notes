@@ -1,0 +1,11 @@
+{{ define "main" }}
+<section class="page-band"><div class="container two-column">
+  <div>
+    <header class="list-heading"><div><h1>Latest Notes</h1></div><span class="list-count">{{ len (partial "posts.html" .) }} articles</span></header>
+    {{ with .Content }}<div class="prose home-intro">{{ . }}</div>{{ end }}
+    <div class="article-list">{{ $pager := .Paginate (partial "posts.html" .) }}{{ range $pager.Pages }}{{ partial "card.html" . }}{{ else }}<div class="sidebar-panel"><h2>Your notebook starts here.</h2><p>Add your first Markdown article to get started.</p></div>{{ end }}</div>
+    {{ partial "pagination.html" $pager }}
+  </div>
+  {{ partial "sidebar.html" . }}
+</div></section>
+{{ end }}

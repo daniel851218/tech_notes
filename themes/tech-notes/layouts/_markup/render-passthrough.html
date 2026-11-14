@@ -1,0 +1,2 @@
+{{- $opts := dict "output" "mathml" "displayMode" (eq .Type "block") -}}
+{{- if eq .Type "block" }}<div class="math-block" tabindex="0" role="region" aria-label="Mathematical formula">{{ transform.ToMath .Inner $opts }}</div>{{ else }}{{ transform.ToMath .Inner $opts }}{{ end -}}
